@@ -2,27 +2,23 @@ public class Main {
     public static void main(String[] args) {
         //First let's create a Deck array that stores all the cards needed.
         System.out.println("4 players are needed to play the game.");
-        Player p1 = new Player();
-        Player p2 = new Player();
-        Player p3 = new Player();
-        Player p4 = new Player();
+        Card[] p1deck = new Card[13];
+        Card[] p2deck = new Card[13];
+        Card[] p3deck = new Card[13];
+        Card[] p4deck = new Card[13];
         Card[] sortedDeck = Card.createDeck();
         Card[] randomized = Card.shuffle(sortedDeck);
-        Player[] players = new Player[4];
-        players[0] = p1;
-        players[1] = p2;
-        players[2] = p3;
-        players[3] = p4;
-        Card[] p1deck = players[0].getDeck();
-        Card[] p2deck = players[1].getDeck();
-        Card[] p3deck = players[2].getDeck();
-        Card[] p4deck = players[3].getDeck();
         for (int i = 0; i <= 12; i++) {
             p1deck[i] = randomized[i];
             p2deck[i] = randomized[i + 13];
             p3deck[i] = randomized[i + 26];
-            p4deck[i] = randomized[i + 29];
+            p4deck[i] = randomized[i + 39];
         }
+        Player p1 = new Player(p1deck, null, 0);
+        Player p2 = new Player(p2deck, null, 0);
+        Player p3 = new Player(p3deck, null, 0);
+        Player p4 = new Player(p4deck, null, 0);
+        Player[] players = {p1, p2, p3, p4};
         System.out.println("PLAYER 1 DECK");
         for (int j = 0; j<= 12; j++)
             System.out.println(p1deck[j]);
@@ -37,7 +33,6 @@ public class Main {
             System.out.println(p4deck[a]);
         checkStart(players);
     }
-    //CODE IS BUGGY; Players get duplicates of some cards; will fix soon.
     public static void checkStart(Player[] players){
         for(int i = 0; i<=3; i++) {
             Card[] currentDeck = players[i].getDeck();
