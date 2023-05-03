@@ -19,7 +19,7 @@ public class Main {
         Player p3 = new Player(p3deck, null, 0);
         Player p4 = new Player(p4deck, null, 0);
         Player[] players = {p1, p2, p3, p4};
-        checkStart(players);
+        checkStart(players); //
     }
     public static void checkStart(Player[] players){
         for(int i = 0; i<=3; i++) {

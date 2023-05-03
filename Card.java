@@ -56,7 +56,7 @@ public class Card {
             //For that we need a method that generates a random number between 0 and 51.
             Card temp = deck[i];
             deck[i] = deck[random];
-            deck[random] = temp;
+            deck[random] = temp; //
         }
         return deck;
     }

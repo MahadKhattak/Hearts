@@ -17,7 +17,7 @@ public class Player {
     public Card[] getDeck(){
         Card[] deck = new Card[13];
         for(int i = 0; i<=12; i++){
-            deck[i] = this.deck[i];
+            deck[i] = this.deck[i]; //
         }
         return deck;
     }
