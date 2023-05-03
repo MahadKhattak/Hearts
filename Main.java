@@ -19,18 +19,6 @@ public class Main {
         Player p3 = new Player(p3deck, null, 0);
         Player p4 = new Player(p4deck, null, 0);
         Player[] players = {p1, p2, p3, p4};
-        System.out.println("PLAYER 1 DECK");
-        for (int j = 0; j<= 12; j++)
-            System.out.println(p1deck[j]);
-        System.out.println("PLAYER 2 DECK");
-        for (int k = 0; k<= 12; k++)
-            System.out.println(p2deck[k]);
-        System.out.println("PLAYER 3 DECK");
-        for (int l = 0; l<= 12; l++)
-            System.out.println(p3deck[l]);
-        System.out.println("PLAYER 4 DECK");
-        for (int a = 0; a<= 12; a++)
-            System.out.println(p4deck[a]);
         checkStart(players);
     }
     public static void checkStart(Player[] players){
