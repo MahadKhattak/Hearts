@@ -41,10 +41,10 @@ public class Card {
     public static Card[] createDeck(){
         Card[] sortedDeck = new Card[52];
         for(int i = 0; i<=12; i++) {
-            sortedDeck[i] = new Card(i+1, "Hearts");
-            sortedDeck[i+13] = new Card(i+1, "Diamonds");
-            sortedDeck[i+26] = new Card(i+1, "Spades");
-            sortedDeck[i+39] = new Card(i+1, "Clubs");
+            sortedDeck[i] = new Card(i+1, "\u2665");
+            sortedDeck[i+13] = new Card(i+1, "\u2666");
+            sortedDeck[i+26] = new Card(i+1, "\u2660");
+            sortedDeck[i+39] = new Card(i+1, "\u2663");
         }
         return sortedDeck;
     }
@@ -56,7 +56,7 @@ public class Card {
             //For that we need a method that generates a random number between 0 and 51.
             Card temp = deck[i];
             deck[i] = deck[random];
-            deck[random] = temp; //
+            deck[random] = temp;
         }
         return deck;
     }

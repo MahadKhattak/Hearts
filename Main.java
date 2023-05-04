@@ -19,14 +19,21 @@ public class Main {
         Player p3 = new Player(p3deck, null, 0);
         Player p4 = new Player(p4deck, null, 0);
         Player[] players = {p1, p2, p3, p4};
-        checkStart(players); //
+        checkStart(players);
     }
     public static void checkStart(Player[] players){
         for(int i = 0; i<=3; i++) {
             Card[] currentDeck = players[i].getDeck();
             for (int j = 0; j <= 12; j++)
-                if(currentDeck[j].toString().equals("2 of Clubs"))
-                    System.out.println("Player " + (i+1) + " starts.");
+                if(currentDeck[j].toString().equals("2 of " + "\u2663")) {
+                    System.out.println("Player " + (i + 1) + " starts.");
+                    System.out.println("Here is your deck: ");
+                    for(int k = 0; k<currentDeck.length; k++) {
+                        System.out.print("|" + currentDeck[k] + "|" + " ");
+                        if(k==6)
+                            System.out.println();
+                    }
+                }
         }
     }
 }
