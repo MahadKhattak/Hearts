@@ -28,13 +28,20 @@ public class Main {
             System.out.println("The first card always has to be the 2 of Spades!");
             firstChoice = keyIn.nextLine();
         }
+        players[starterPlayerNumber-1].setDeck(Card.removeCardFromDeck(players[starterPlayerNumber-1].getDeck(), "2 of Spades"));
+        Card[] test = players[starterPlayerNumber-1].getDeck();
+        for(int i = 0; i<players[starterPlayerNumber-1].getDeck().length; i++)
+            System.out.println(test[i]);
         //Put this stuff into a loop, and continue it until the game's over; also add mechanism to remove the cards from the deck.
         System.out.println("Player " + (starterPlayerNumber + 1) + "'s turn");
-        if(starterPlayerNumber<4)
-            Methods.printDeck(players[starterPlayerNumber+1].getDeck());
-        else
-            Methods.printDeck(players[0].getDeck());
-
+        boolean gameFinished = false;
+        while(!gameFinished) {
+            starterPlayerNumber++;
+            if (starterPlayerNumber < 4)
+                Methods.printDeck(players[starterPlayerNumber].getDeck());
+            else
+                Methods.printDeck(players[0].getDeck());
+        }
 
     }
 
