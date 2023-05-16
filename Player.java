@@ -21,10 +21,9 @@ public class Player {
         }
         return deck;
     }
-    public Card[] setDeck(Card[] deck) {
+    public void setDeck(Card[] deck) {
         for (int i = 0; i < deck.length; i++) {
-            this.deck[i] = deck[i];
+            this.deck[i] = deck[i]; //This method is why it duplicates
         }
-        return this.deck;
     }
 }

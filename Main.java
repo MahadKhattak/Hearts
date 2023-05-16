@@ -24,24 +24,23 @@ public class Main {
         Methods.printTable();
         int starterPlayerNumber = checkStart(players);
         String firstChoice = keyIn.nextLine();
-        while(!firstChoice.equals("2 of Spades")) {
-            System.out.println("The first card always has to be the 2 of Spades!");
+        while(!firstChoice.equals("2 of Clubs")) {
+            System.out.println("The first card always has to be the 2 of Clubs!");
             firstChoice = keyIn.nextLine();
         }
-        players[starterPlayerNumber-1].setDeck(Card.removeCardFromDeck(players[starterPlayerNumber-1].getDeck(), "2 of Spades"));
-        Card[] test = players[starterPlayerNumber-1].getDeck();
-        for(int i = 0; i<players[starterPlayerNumber-1].getDeck().length; i++)
-            System.out.println(test[i]);
+        players[starterPlayerNumber-1].setDeck(Card.removeCardFromDeck(players[starterPlayerNumber-1].getDeck(), "2 of " + "\u2663"));
+        Methods.printDeck(players[starterPlayerNumber-1].getDeck());
         //Put this stuff into a loop, and continue it until the game's over; also add mechanism to remove the cards from the deck.
+        System.out.println();
         System.out.println("Player " + (starterPlayerNumber + 1) + "'s turn");
         boolean gameFinished = false;
-        while(!gameFinished) {
-            starterPlayerNumber++;
-            if (starterPlayerNumber < 4)
-                Methods.printDeck(players[starterPlayerNumber].getDeck());
-            else
-                Methods.printDeck(players[0].getDeck());
-        }
+//        while(!gameFinished) {
+//            starterPlayerNumber++;
+//            if (starterPlayerNumber < 4)
+//                Methods.printDeck(players[starterPlayerNumber].getDeck());
+//            else
+//                Methods.printDeck(players[0].getDeck());
+//        }
 
     }
 

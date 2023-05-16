@@ -27,7 +27,7 @@ public class Methods {
         System.out.println("Here is your deck");
         for (int k = 0; k < deck.length; k++) {
             System.out.print("|" + deck[k] + "|" + " ");
-            if (k == 6)
+            if (k == deck.length/2)
                 System.out.println();
         }
     }
