@@ -15,15 +15,13 @@ public class Player {
     } //Might be used to save the game later
       //Having a binary file with Players written to it that could be loaded, that'd be nice
     public Card[] getDeck(){
-        Card[] deck = new Card[13];
-        for(int i = 0; i<=12; i++){
+        Card[] deck = new Card[this.deck.length];
+        for(int i = 0; i<this.deck.length; i++){
             deck[i] = this.deck[i];
         }
         return deck;
     }
     public void setDeck(Card[] deck) {
-        for (int i = 0; i < deck.length; i++) {
-            this.deck[i] = deck[i]; //This method is why it duplicates
-        }
+        this.deck = deck;
     }
 }

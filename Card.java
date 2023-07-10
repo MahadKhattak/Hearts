@@ -67,7 +67,7 @@ public class Card {
         //This method should also make the deck array 1 shorter for every call.
         Card[] updatedDeck = new Card[deck.length-1];
         boolean a = true;
-        for(int i = 0; i<deck.length; i++){
+        for(int i = 0; i<updatedDeck.length; i++){
             if(deck[i].toString().equals(cardToString)) {
                 a = false;
                 continue;
