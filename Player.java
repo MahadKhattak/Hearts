@@ -13,13 +13,15 @@ public class Player {
         this.takenCards = takenCards; //Same thing here?
         this.points = points;
     } //Might be used to save the game later
-      //Having a binary file with Players written to it that could be loaded, that'd be nice
+    //Having a binary file with Players written to it that could be loaded, that'd be nice
     public Card[] getDeck(){
-        Card[] deck = new Card[13];
-        for(int i = 0; i<=12; i++){
+        Card[] deck = new Card[this.deck.length];
+        for(int i = 0; i<this.deck.length; i++){
             deck[i] = this.deck[i];
         }
         return deck;
     }
-
+    public void setDeck(Card[] deck) {
+        this.deck = deck;
+    }
 }

@@ -23,4 +23,12 @@ public class Methods {
             //More code here to read the Player objects from the file and create them, then load the game at the specified turn.
         }
     }
+    public static void printDeck(Card[] deck){
+        System.out.println("Here is your deck:");
+        for (int k = 0; k < deck.length; k++) {
+            System.out.print("|" + deck[k] + "|" + " ");
+            if (k == deck.length/2)
+                System.out.println();
+        }
+    }
 }

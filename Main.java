@@ -1,6 +1,8 @@
+import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
         //First let's create a Deck array that stores all the cards needed.
+        Scanner keyIn = new Scanner(System.in);
         System.out.println("4 players are needed to play the game.");
         Card[] p1deck = new Card[13];
         Card[] p2deck = new Card[13];
@@ -19,22 +21,75 @@ public class Main {
         Player p3 = new Player(p3deck, null, 0);
         Player p4 = new Player(p4deck, null, 0);
         Player[] players = {p1, p2, p3, p4};
-        checkStart(players);
+        Methods.printTable();
+        int starterPlayerNumber = checkStart(players);
+        String firstChoice = keyIn.nextLine();
+        while(!firstChoice.equalsIgnoreCase("2 of Clubs")) {
+            System.out.println("The first card always has to be the 2 of Clubs!");
+            firstChoice = keyIn.nextLine();
+        }
+        Card[] newDeck = Card.removeCardFromDeck(players[starterPlayerNumber].getDeck(), "2 of " + "\u2663");
+        players[starterPlayerNumber].setDeck(newDeck);
+        starterPlayerNumber++;
+        System.out.println();
+        boolean gameFinished = false;
+        while(!gameFinished){
+            System.out.println("Player " + (starterPlayerNumber) + "'s turn");
+            System.out.println();
+            if (starterPlayerNumber < 4){
+                playCard(players, starterPlayerNumber);
+            }
+            else {
+                starterPlayerNumber = 0;
+                playCard(players, starterPlayerNumber);
+            }
+            starterPlayerNumber++;
+            if(players[0].getDeck().length==0&&players[1].getDeck().length==0&&players[2].getDeck().length==0&&players[3].getDeck().length==0){
+                System.out.println("Game is over. Good game!");
+                gameFinished = true;
+            }
+        }
+
     }
 
-    public static void checkStart(Player[] players) {
+    public static int checkStart(Player[] players) {
         for (int i = 0; i <= 3; i++) {
             Card[] currentDeck = players[i].getDeck();
             for (int j = 0; j <= 12; j++)
                 if (currentDeck[j].toString().equals("2 of " + "\u2663")) {
-                    System.out.println("Player " + (i + 1) + " starts.");
-                    System.out.println("Here is your deck: ");
-                    for (int k = 0; k < currentDeck.length; k++) {
-                        System.out.print("|" + currentDeck[k] + "|" + " ");
-                        if (k == 6)
-                            System.out.println();
-                    }
+                    if(i==0)
+                        System.out.println("Player 1 starts");
+                    else
+                        System.out.println("Player " + (i) + " starts.");
+                    Methods.printDeck(currentDeck);
+                    return(i);
                 }
         }
+        return 0;
+    }
+
+    public static void playCard(Player[] players, int starterPlayerNumber){
+        Methods.printDeck(players[starterPlayerNumber].getDeck());
+        Scanner keyIn = new Scanner(System.in);
+        System.out.println();
+        System.out.println("Select a card to play.");
+        String choice1 = keyIn.nextLine();
+        //Error handling to check if card is in deck or not
+        String choice = convertToASCII(choice1);
+        Card[] newDeck2 = Card.removeCardFromDeck(players[starterPlayerNumber].getDeck(), choice);
+        players[starterPlayerNumber].setDeck(newDeck2);
+    }
+
+    public static String convertToASCII(String card){
+        String s = null;
+        if(card.substring(5).equalsIgnoreCase("Hearts"))
+            s = card.substring(0, 5) + "\u2665";
+        else if(card.substring(5).equalsIgnoreCase("Spades"))
+            s = card.substring(0, 5) + "\u2660";
+        else if(card.substring(5).equalsIgnoreCase("Clubs"))
+            s = card.substring(0, 5) + "\u2663";
+        else if(card.substring(5).equalsIgnoreCase("Diamonds"))
+            s = card.substring(0, 5) + "\u2666";
+        return s;
     }
 }
