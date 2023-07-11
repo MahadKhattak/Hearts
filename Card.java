@@ -63,23 +63,4 @@ public class Card {
     private static int randomNumber(){
         return ((int)(Math.random()*52));
     }
-    public static Card[] removeCardFromDeck(Card[] deck, String cardToString){
-        //This method should also make the deck array 1 shorter for every call.
-        Card[] updatedDeck = new Card[deck.length-1];
-        boolean a = true;
-        for(int i = 0; i<updatedDeck.length; i++){
-            if(deck[i].toString().equals(cardToString)) {
-                a = false;
-                continue;
-                //Initialize to deckLength-1 for every after occurrence.
-            }
-            if(a)
-                updatedDeck[i] = deck[i];
-            else
-                updatedDeck[i-1] = deck[i];
-        }
-        return updatedDeck;
-        //Every card before the removed card will have the same index; every card after will have index-1 from before.
-        //Must fix bug with removeCardFromDeck; taking a break.
-    }
 }
