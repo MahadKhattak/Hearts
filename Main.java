@@ -44,7 +44,7 @@ public class Main {
             for (i = 0; i < currentStack.length; i++) {
                 if (firstRound) {
                     i = 1;
-                    currentStack[0] = "\u2663";
+                    currentStack[0] = "Clubs";
                     firstRound = false;
                 }
                 if (i >= 1)
@@ -56,7 +56,7 @@ public class Main {
                 System.out.println("Player " + (starterPlayerNumber + 1) + "'s turn");
                 currentStack[i] = playCard(players, starterPlayerNumber);
                 if (!firstCard) {
-                    while (!(currentStack[i].equals(currentStack[i - 1])) && suitInDeck(players[starterPlayerNumber].getDeck(), currentStack[i - 1])) {
+                    while (!(currentStack[i].equalsIgnoreCase(currentStack[i - 1])) && suitInDeck(players[starterPlayerNumber].getDeck(), currentStack[i-1])) {
                         System.out.println("The card you place must be of the same suit as the previous card placed. Try again.");
                         currentStack[i] = playCard(players, starterPlayerNumber);
                     }
@@ -68,7 +68,7 @@ public class Main {
                 }
             }
         }
-        checkStart(players);
+        //checkStart(players);
     }
 
     public static int checkStart(Player[] players) {
@@ -101,7 +101,7 @@ public class Main {
             if (currentDeck[i].toString().equalsIgnoreCase(choice))
                 cardInDeck = true;
         }
-        if (cardInDeck) { //Maybe just change the condition here? Returning a suit with the array works too tho
+        if (cardInDeck) { //Maybe just change the condition here? Returning a suit with the array works too
             Card[] newDeck = Card.removeCardFromDeck(players[starterPlayerNumber].getDeck(), choice);
             players[starterPlayerNumber].setDeck(newDeck);
         } else {
@@ -113,7 +113,7 @@ public class Main {
 
     public static boolean suitInDeck(Card[] currentDeck, String suit) {
         for (int i = 0; i < currentDeck.length; i++) {
-            if (currentDeck[i].getSuit().equalsIgnoreCase(suit))
+            if (currentDeck[i].getSuit().equalsIgnoreCase(toSymbol(suit)))
                 return true;
         }
         return false;
@@ -131,5 +131,19 @@ public class Main {
         else if (temp[2].equalsIgnoreCase("Diamonds"))
             s = temp[0] + " " + temp[1] + " \u2666";
         return s;
+    }
+
+    public static String toSymbol(String s){
+        String symbol = null;
+        if(s.equalsIgnoreCase("hearts"))
+            symbol = "\u2665";
+        else if(s.equalsIgnoreCase("diamonds"))
+            symbol = "\u2666";
+        else if(s.equalsIgnoreCase("spades"))
+            symbol = "\u2660";
+        else if(s.equalsIgnoreCase("clubs"))
+            symbol = "\u2663";
+
+        return symbol;
     }
 }
