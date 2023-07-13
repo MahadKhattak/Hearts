@@ -1,7 +1,7 @@
 import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
-        //First let's create a Deck array that stores all the cards needed.
+        //Null card bugs and exceptions have something to do with value and String not being the same
         System.out.println("4 players are needed to play the game.");
         Card[] p1deck = new Card[13];
         Card[] p2deck = new Card[13];
@@ -40,11 +40,11 @@ public class Main {
         while (!gameFinished) {
             boolean firstCard = true;
             int i = 0;
-            String[] currentStack = new String[4];
+            Card[] currentStack = new Card[4];
             for (i = 0; i < currentStack.length; i++) {
                 if (firstRound) {
                     i = 1;
-                    currentStack[0] = "Clubs";
+                    currentStack[0] = new Card(2, "\u2663");
                     firstRound = false;
                 }
                 if (i >= 1)
@@ -56,7 +56,7 @@ public class Main {
                 System.out.println("Player " + (starterPlayerNumber + 1) + "'s turn");
                 currentStack[i] = playCard(players, starterPlayerNumber);
                 if (!firstCard) {
-                    while (!(currentStack[i].equalsIgnoreCase(currentStack[i - 1])) && suitInDeck(players[starterPlayerNumber].getDeck(), currentStack[i-1])) {
+                    while (!(currentStack[i].getSuit().equalsIgnoreCase((currentStack[i - 1].getSuit()))) && suitInDeck(players[starterPlayerNumber].getDeck(), currentStack[i-1])) {
                         System.out.println("The card you place must be of the same suit as the previous card placed. Try again.");
                         currentStack[i] = playCard(players, starterPlayerNumber);
                     }
@@ -67,8 +67,11 @@ public class Main {
                     gameFinished = true;
                 }
             }
+            //End of for loop //Loop through, check which player put the highest card, add to their arraylist and countPoints() method to check their points, easy right? Stack is full here.
+            //Yeah, add a player array with the players in their order of play, that matches them to cards automatically.
+            //Then loop through Card array, check which has the biggest value, takes its index and give all the cards in the array to the player.
+            //Repeat until end.
         }
-        //checkStart(players);
     }
 
     public static int checkStart(Player[] players) {
@@ -85,7 +88,7 @@ public class Main {
     }
 
     //Make inDeck() method that checks if the card is in deck.
-    public static String playCard(Player[] players, int starterPlayerNumber) {
+    public static Card playCard(Player[] players, int starterPlayerNumber) {
         Methods.printDeck(players[starterPlayerNumber].getDeck());
         Scanner keyIn = new Scanner(System.in);
         System.out.println();
@@ -101,19 +104,19 @@ public class Main {
             if (currentDeck[i].toString().equalsIgnoreCase(choice))
                 cardInDeck = true;
         }
-        if (cardInDeck) { //Maybe just change the condition here? Returning a suit with the array works too
+        if (cardInDeck) {
             Card[] newDeck = Card.removeCardFromDeck(players[starterPlayerNumber].getDeck(), choice);
             players[starterPlayerNumber].setDeck(newDeck);
         } else {
             System.out.println("Card is not in deck. Please choose a card in your deck.");
             playCard(players, starterPlayerNumber);
         }
-        return suit; //Return just the suit so that we can compare the suit to other cards
+        return new Card(Integer.parseInt(temp[0]), temp[2]);
     }
 
-    public static boolean suitInDeck(Card[] currentDeck, String suit) {
+    public static boolean suitInDeck(Card[] currentDeck, Card card) {
         for (int i = 0; i < currentDeck.length; i++) {
-            if (currentDeck[i].getSuit().equalsIgnoreCase(toSymbol(suit)))
+            if (currentDeck[i].getSuit().equalsIgnoreCase(card.getSuit()))
                 return true;
         }
         return false;
@@ -131,19 +134,5 @@ public class Main {
         else if (temp[2].equalsIgnoreCase("Diamonds"))
             s = temp[0] + " " + temp[1] + " \u2666";
         return s;
-    }
-
-    public static String toSymbol(String s){
-        String symbol = null;
-        if(s.equalsIgnoreCase("hearts"))
-            symbol = "\u2665";
-        else if(s.equalsIgnoreCase("diamonds"))
-            symbol = "\u2666";
-        else if(s.equalsIgnoreCase("spades"))
-            symbol = "\u2660";
-        else if(s.equalsIgnoreCase("clubs"))
-            symbol = "\u2663";
-
-        return symbol;
     }
 }

@@ -22,6 +22,10 @@ public class Methods {
             String fileName = keyIn.nextLine();
             //More code here to read the Player objects from the file and create them, then load the game at the specified turn.
         }
+        else{
+            System.out.println("That is not a valid option. Please choose again.");
+            printTable();
+        }
     }
     public static void printDeck(Card[] deck){
         System.out.println("Here is your deck:");

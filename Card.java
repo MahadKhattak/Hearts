@@ -8,8 +8,9 @@ public class Card {
     }
 
     public Card(int value, String suit) {
+        String realSuit = toSymbol(suit);
         this.value = value;
-        this.suit = suit;
+        this.suit = realSuit;
     }
 
     public Card(Card card) {
@@ -94,6 +95,20 @@ public class Card {
     }
     private static int randomNumber () {
         return ((int) (Math.random() * 52));
+    }
+    public static String toSymbol(String s){
+        String symbol = null;
+        if(s.equalsIgnoreCase("hearts"))
+            symbol = "\u2665";
+        else if(s.equalsIgnoreCase("diamonds"))
+            symbol = "\u2666";
+        else if(s.equalsIgnoreCase("spades"))
+            symbol = "\u2660";
+        else if(s.equalsIgnoreCase("clubs"))
+            symbol = "\u2663";
+        else return s;
+
+        return symbol;
     }
 }
 
