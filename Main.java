@@ -41,10 +41,12 @@ public class Main {
             boolean firstCard = true;
             int i = 0;
             Card[] currentStack = new Card[4];
+            Player[] playerStack = new Player[4];
             for (i = 0; i < currentStack.length; i++) {
                 if (firstRound) {
                     i = 1;
                     currentStack[0] = new Card(2, "\u2663");
+                    playerStack[0] = players[starterPlayerNumber];
                     firstRound = false;
                 }
                 if (i >= 1)
@@ -53,8 +55,9 @@ public class Main {
                 if (starterPlayerNumber >= 4) {
                     starterPlayerNumber = 0;
                 }
+                    playerStack[i] = players[starterPlayerNumber]; //FIX PLAYERSTACK BUG; DUPLICATE PLAYERS
                 System.out.println("Player " + (starterPlayerNumber + 1) + "'s turn");
-                currentStack[i] = playCard(players, starterPlayerNumber);
+                    currentStack[i] = playCard(players, starterPlayerNumber);
                 if (!firstCard) {
                     while (!(currentStack[i].getSuit().equalsIgnoreCase((currentStack[i - 1].getSuit()))) && suitInDeck(players[starterPlayerNumber].getDeck(), currentStack[i-1])) {
                         System.out.println("The card you place must be of the same suit as the previous card placed. Try again.");
@@ -67,7 +70,7 @@ public class Main {
                     gameFinished = true;
                 }
             }
-            //End of for loop //Loop through, check which player put the highest card, add to their arraylist and countPoints() method to check their points, easy right? Stack is full here.
+            //Loop through, check which player put the highest card, add to their arraylist and countPoints() method to check their points, easy right? Stack is full here.
             //Yeah, add a player array with the players in their order of play, that matches them to cards automatically.
             //Then loop through Card array, check which has the biggest value, takes its index and give all the cards in the array to the player.
             //Repeat until end.
