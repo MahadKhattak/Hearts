@@ -78,7 +78,7 @@ public class Card {
         boolean a = true;
         for (int i = 0; i < deck.length; i++) {
             for (int j = 0; j < updatedDeck.length; j++) {
-                if (deck[i].toString().equals(cardToString)) {
+                if (deck[i].toString().equalsIgnoreCase(cardToString)) {
                     a = false;
                     continue;
                     //Initialize to deckLength-1 for every after occurrence.

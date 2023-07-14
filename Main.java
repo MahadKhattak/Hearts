@@ -1,7 +1,7 @@
 import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
-        //Null card bugs and exceptions have something to do with value and String not being the same
+        //Fix bug where if you do a card not in your deck, then the suits for the next card being places don't match up.
         System.out.println("4 players are needed to play the game.");
         Card[] p1deck = new Card[13];
         Card[] p2deck = new Card[13];
@@ -39,23 +39,29 @@ public class Main {
         boolean firstRound = true;
         while (!gameFinished) {
             boolean firstCard = true;
+            boolean firstRotation = true;
             int i = 0;
             Card[] currentStack = new Card[4];
             Player[] playerStack = new Player[4];
             for (i = 0; i < currentStack.length; i++) {
+                if (starterPlayerNumber >= 4) {
+                    starterPlayerNumber = 0;
+                }
                 if (firstRound) {
                     i = 1;
                     currentStack[0] = new Card(2, "\u2663");
                     playerStack[0] = players[starterPlayerNumber];
+                    if(starterPlayerNumber!=3)
+                        playerStack[1] = players[starterPlayerNumber + 1];
+                    else
+                        playerStack[1] = players[3];
                     firstRound = false;
                 }
+                if(i>1)
+                    playerStack[i] = players[starterPlayerNumber];
                 if (i >= 1)
                     firstCard = false;
                 System.out.println();
-                if (starterPlayerNumber >= 4) {
-                    starterPlayerNumber = 0;
-                }
-                    playerStack[i] = players[starterPlayerNumber]; //FIX PLAYERSTACK BUG; DUPLICATE PLAYERS
                 System.out.println("Player " + (starterPlayerNumber + 1) + "'s turn");
                     currentStack[i] = playCard(players, starterPlayerNumber);
                 if (!firstCard) {
@@ -100,6 +106,7 @@ public class Main {
         String[] temp = choice1.split(" ");
         String suit = temp[temp.length - 1];
         String choice = convertToASCII(choice1);
+        String[] temp2 = choice.split(" ");
         //Error handling for wrong card
         boolean cardInDeck = false;
         Card[] currentDeck = players[starterPlayerNumber].getDeck();
@@ -112,9 +119,9 @@ public class Main {
             players[starterPlayerNumber].setDeck(newDeck);
         } else {
             System.out.println("Card is not in deck. Please choose a card in your deck.");
-            playCard(players, starterPlayerNumber);
+            playCard(players, starterPlayerNumber); //Fix bug here; If card not in deck then the step after just puts any card; random behaviour
         }
-        return new Card(Integer.parseInt(temp[0]), temp[2]);
+        return new Card(toInt(temp[0]), temp[2]);
     }
 
     public static boolean suitInDeck(Card[] currentDeck, Card card) {
@@ -137,5 +144,17 @@ public class Main {
         else if (temp[2].equalsIgnoreCase("Diamonds"))
             s = temp[0] + " " + temp[1] + " \u2666";
         return s;
+    }
+
+    public static int toInt(String firstExpression){
+        if(firstExpression.equalsIgnoreCase("ace"))
+            return 1;
+        else if(firstExpression.equalsIgnoreCase("jester"))
+            return 11;
+        else if(firstExpression.equalsIgnoreCase("queen"))
+            return 12;
+        else if(firstExpression.equalsIgnoreCase("king"))
+            return 13;
+        else return Integer.parseInt(firstExpression);
     }
 }
