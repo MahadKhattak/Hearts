@@ -1,7 +1,7 @@
 import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
-        //Fix bug where if you do a card not in your deck, then the suits for the next card being places don't match up.
+
         System.out.println("4 players are needed to play the game.");
         Card[] p1deck = new Card[13];
         Card[] p2deck = new Card[13];
@@ -39,7 +39,6 @@ public class Main {
         boolean firstRound = true;
         while (!gameFinished) {
             boolean firstCard = true;
-            boolean firstRotation = true;
             int i = 0;
             Card[] currentStack = new Card[4];
             Player[] playerStack = new Player[4];
@@ -48,28 +47,20 @@ public class Main {
                     starterPlayerNumber = 0;
                 }
                 if (firstRound) {
-                    i = 1;
                     currentStack[0] = new Card(2, "\u2663");
                     playerStack[0] = players[starterPlayerNumber];
-                    if(starterPlayerNumber!=3)
-                        playerStack[1] = players[starterPlayerNumber + 1];
-                    else
-                        playerStack[1] = players[3];
                     firstRound = false;
+                    continue;
                 }
-                if(i>1)
                     playerStack[i] = players[starterPlayerNumber];
                 if (i >= 1)
                     firstCard = false;
                 System.out.println();
                 System.out.println("Player " + (starterPlayerNumber + 1) + "'s turn");
+                if (!firstCard)
+                    currentStack[i] = playCard(players, starterPlayerNumber, currentStack[i-1]);
+                else
                     currentStack[i] = playCard(players, starterPlayerNumber);
-                if (!firstCard) {
-                    while (!(currentStack[i].getSuit().equalsIgnoreCase((currentStack[i - 1].getSuit()))) && suitInDeck(players[starterPlayerNumber].getDeck(), currentStack[i-1])) {
-                        System.out.println("The card you place must be of the same suit as the previous card placed. Try again.");
-                        currentStack[i] = playCard(players, starterPlayerNumber);
-                    }
-                }
                 starterPlayerNumber++;
                 if (players[0].getDeck().length == 0 && players[1].getDeck().length == 0 && players[2].getDeck().length == 0 && players[3].getDeck().length == 0) {
                     System.out.println("Game is over. Good game!");
@@ -96,30 +87,81 @@ public class Main {
         return 0;
     }
 
-    //Make inDeck() method that checks if the card is in deck.
     public static Card playCard(Player[] players, int starterPlayerNumber) {
-        Methods.printDeck(players[starterPlayerNumber].getDeck());
-        Scanner keyIn = new Scanner(System.in);
-        System.out.println();
-        System.out.println("Select a card to play.");
-        String choice1 = keyIn.nextLine();
-        String[] temp = choice1.split(" ");
-        String suit = temp[temp.length - 1];
-        String choice = convertToASCII(choice1);
-        String[] temp2 = choice.split(" ");
-        //Error handling for wrong card
-        boolean cardInDeck = false;
-        Card[] currentDeck = players[starterPlayerNumber].getDeck();
-        for (int i = 0; i < currentDeck.length; i++) {
-            if (currentDeck[i].toString().equalsIgnoreCase(choice))
-                cardInDeck = true;
+        boolean validCard = false;
+        String[] temp = null;
+        while(!validCard){
+            Methods.printDeck(players[starterPlayerNumber].getDeck());
+            Scanner keyIn = new Scanner(System.in);
+            System.out.println();
+            System.out.println("Select a card to play.");
+            String choice1 = keyIn.nextLine();
+            temp = choice1.split(" ");
+            if (temp.length != 3 || temp == null) {
+                System.out.println("An invalid card was entered. Try again.");
+                continue;
+            }
+            String choice = convertToASCII(choice1);
+            if (choice == null) {
+                System.out.println("An invalid card was entered. Try again.");
+                continue;
+            }
+            //Error handling for wrong card
+            boolean cardInDeck = false;
+            Card[] currentDeck = players[starterPlayerNumber].getDeck();
+            for (int i = 0; i < currentDeck.length; i++) {
+                if (currentDeck[i].toString().equalsIgnoreCase(choice))
+                    cardInDeck = true;
+            }
+            if (cardInDeck) {
+                Card[] newDeck = Card.removeCardFromDeck(players[starterPlayerNumber].getDeck(), choice);
+                players[starterPlayerNumber].setDeck(newDeck);
+            } else {
+                System.out.println("Card is not in deck. Please choose a card in your deck.");
+                continue;
+            }
+            validCard = true;
         }
-        if (cardInDeck) {
-            Card[] newDeck = Card.removeCardFromDeck(players[starterPlayerNumber].getDeck(), choice);
-            players[starterPlayerNumber].setDeck(newDeck);
-        } else {
-            System.out.println("Card is not in deck. Please choose a card in your deck.");
-            playCard(players, starterPlayerNumber); //Fix bug here; If card not in deck then the step after just puts any card; random behaviour
+        return new Card(toInt(temp[0]), temp[2]);
+    }
+    public static Card playCard(Player[] players, int starterPlayerNumber, Card previousCard) {
+        boolean validCard = false;
+        String[] temp = null;
+        while(!validCard){
+            Methods.printDeck(players[starterPlayerNumber].getDeck());
+            Scanner keyIn = new Scanner(System.in);
+            System.out.println();
+            System.out.println("Select a card to play.");
+            String choice1 = keyIn.nextLine();
+            temp = choice1.split(" ");
+            if (temp.length != 3 || temp == null) {
+                System.out.println("An invalid card was entered. Try again.");
+                continue;
+            }
+            String choice = convertToASCII(choice1);
+            if (choice == null) {
+                System.out.println("An invalid card was entered. Try again.");
+                continue;
+            }
+            if(!(choice.substring(choice.length()-1).equalsIgnoreCase(previousCard.getSuit()))&&suitInDeck(players[starterPlayerNumber].getDeck(), previousCard)){
+                System.out.println("The card you placed must be of the same suit as the previously placed card.");
+                continue;
+            }
+            //Error handling for wrong card
+            boolean cardInDeck = false;
+            Card[] currentDeck = players[starterPlayerNumber].getDeck();
+            for (int i = 0; i < currentDeck.length; i++) {
+                if (currentDeck[i].toString().equalsIgnoreCase(choice))
+                    cardInDeck = true;
+            }
+            if (cardInDeck) {
+                Card[] newDeck = Card.removeCardFromDeck(players[starterPlayerNumber].getDeck(), choice);
+                players[starterPlayerNumber].setDeck(newDeck);
+            } else {
+                System.out.println("Card is not in deck. Please choose a card in your deck.");
+                continue;
+            }
+            validCard = true;
         }
         return new Card(toInt(temp[0]), temp[2]);
     }
@@ -143,6 +185,8 @@ public class Main {
             s = temp[0] + " " + temp[1] + " \u2663";
         else if (temp[2].equalsIgnoreCase("Diamonds"))
             s = temp[0] + " " + temp[1] + " \u2666";
+        else
+            return null;
         return s;
     }
 
