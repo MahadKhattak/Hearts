@@ -30,6 +30,8 @@ public class Main {
         }
         Card[] newDeck = Card.removeCardFromDeck(players[starterPlayerNumber].getDeck(), "2 of " + "\u2663");
         players[starterPlayerNumber].setDeck(newDeck);
+        Player[] playerStack = new Player[4];
+        playerStack[0] = players[starterPlayerNumber];
         if (starterPlayerNumber < 4)
             starterPlayerNumber++;
         else
@@ -41,14 +43,14 @@ public class Main {
             boolean firstCard = true;
             int i = 0;
             Card[] currentStack = new Card[4];
-            Player[] playerStack = new Player[4];
+            if(!firstRound)
+                playerStack = new Player[4];
             for (i = 0; i < currentStack.length; i++) {
                 if (starterPlayerNumber >= 4) {
                     starterPlayerNumber = 0;
                 }
                 if (firstRound) {
                     currentStack[0] = new Card(2, "\u2663");
-                    playerStack[0] = players[starterPlayerNumber];
                     firstRound = false;
                     continue;
                 }
@@ -58,7 +60,7 @@ public class Main {
                 System.out.println();
                 System.out.println("Player " + (starterPlayerNumber + 1) + "'s turn");
                 if (!firstCard)
-                    currentStack[i] = playCard(players, starterPlayerNumber, currentStack[i-1]);
+                    currentStack[i] = playCard(players, starterPlayerNumber, currentStack[0]);
                 else
                     currentStack[i] = playCard(players, starterPlayerNumber);
                 starterPlayerNumber++;
@@ -66,6 +68,11 @@ public class Main {
                     System.out.println("Game is over. Good game!");
                     gameFinished = true;
                 }
+            }
+            int highestCard = currentStack[0].getValue();
+            for(int k = 0; k<currentStack.length; k++){
+                if(k!=3&&highestCard<currentStack[k+1].getValue())
+                    highestCard = currentStack[k+1].getValue();
             }
             //Loop through, check which player put the highest card, add to their arraylist and countPoints() method to check their points, easy right? Stack is full here.
             //Yeah, add a player array with the players in their order of play, that matches them to cards automatically.
@@ -124,7 +131,7 @@ public class Main {
         }
         return new Card(toInt(temp[0]), temp[2]);
     }
-    public static Card playCard(Player[] players, int starterPlayerNumber, Card previousCard) {
+    public static Card playCard(Player[] players, int starterPlayerNumber, Card firstCard) {
         boolean validCard = false;
         String[] temp = null;
         while(!validCard){
@@ -143,8 +150,8 @@ public class Main {
                 System.out.println("An invalid card was entered. Try again.");
                 continue;
             }
-            if(!(choice.substring(choice.length()-1).equalsIgnoreCase(previousCard.getSuit()))&&suitInDeck(players[starterPlayerNumber].getDeck(), previousCard)){
-                System.out.println("The card you placed must be of the same suit as the previously placed card.");
+            if(!(choice.substring(choice.length()-1).equalsIgnoreCase(firstCard.getSuit()))&&suitInDeck(players[starterPlayerNumber].getDeck(), firstCard)){
+                System.out.println("The card you placed must be of the same suit as the card placed first, unless your deck does not contain the suit.");
                 continue;
             }
             //Error handling for wrong card
