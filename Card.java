@@ -110,5 +110,22 @@ public class Card {
 
         return symbol;
     }
+
+    public static int findHighestCardIndex(Card[] cards){
+        int i = 0;
+        Card highestCard = cards[0];
+        String originalSuit = cards[0].getSuit();
+        for(i = 0; i<cards.length; i++){
+            if(cards[i].getValue()==1&&cards[i].getSuit().equalsIgnoreCase(cards[0].getSuit()))
+                return i;
+            else if(i!=3&&highestCard.getValue()<cards[i+1].getValue()&&cards[i].getSuit().equalsIgnoreCase(cards[0].getSuit()))
+                    highestCard = cards[i+1];
+        }
+        for(int j = 0; j<cards.length; j++){
+            if(highestCard.toString().equalsIgnoreCase(cards[j].toString()))
+                return j;
+        }
+        return 0;
+    }
 }
 

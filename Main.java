@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
@@ -15,10 +16,10 @@ public class Main {
             p3deck[i] = randomized[i + 26];
             p4deck[i] = randomized[i + 39];
         }
-        Player p1 = new Player(p1deck, null, 0);
-        Player p2 = new Player(p2deck, null, 0);
-        Player p3 = new Player(p3deck, null, 0);
-        Player p4 = new Player(p4deck, null, 0);
+        Player p1 = new Player(p1deck, new ArrayList<>(), 0);
+        Player p2 = new Player(p2deck, new ArrayList<>(), 0);
+        Player p3 = new Player(p3deck, new ArrayList<>(), 0);
+        Player p4 = new Player(p4deck, new ArrayList<>(), 0);
         Player[] players = {p1, p2, p3, p4};
         Methods.printTable();
         Scanner keyIn = new Scanner(System.in);
@@ -58,26 +59,27 @@ public class Main {
                 if (i >= 1)
                     firstCard = false;
                 System.out.println();
-                System.out.println("Player " + (starterPlayerNumber + 1) + "'s turn");
+                System.out.println("Player " + (starterPlayerNumber + 1) + "'s turn.");
+                System.out.println("POINTS: " + players[starterPlayerNumber].getPoints());
+                System.out.println("TAKEN CARDS: ");
+                players[starterPlayerNumber].displayTakenCards();
+                System.out.println();
                 if (!firstCard)
                     currentStack[i] = playCard(players, starterPlayerNumber, currentStack[0]);
                 else
                     currentStack[i] = playCard(players, starterPlayerNumber);
                 starterPlayerNumber++;
-                if (players[0].getDeck().length == 0 && players[1].getDeck().length == 0 && players[2].getDeck().length == 0 && players[3].getDeck().length == 0) {
-                    System.out.println("Game is over. Good game!");
-                    gameFinished = true;
-                }
             }
-            int highestCard = currentStack[0].getValue();
-            for(int k = 0; k<currentStack.length; k++){
-                if(k!=3&&highestCard<currentStack[k+1].getValue())
-                    highestCard = currentStack[k+1].getValue();
-            }
-            //Loop through, check which player put the highest card, add to their arraylist and countPoints() method to check their points, easy right? Stack is full here.
-            //Yeah, add a player array with the players in their order of play, that matches them to cards automatically.
+            int highestCardIndex = Card.findHighestCardIndex(currentStack);
+            players[highestCardIndex].addToTakenCardsAndPoints(currentStack);
+            //Loop through, check which player put the highest card, add to their arraylist.
+            //Player array with the players in their order of play, that matches them to cards automatically.
             //Then loop through Card array, check which has the biggest value, takes its index and give all the cards in the array to the player.
             //Repeat until end.
+            if (players[0].getDeck().length == 0 && players[1].getDeck().length == 0 && players[2].getDeck().length == 0 && players[3].getDeck().length == 0) {
+                System.out.println("Game is over. Good game!");
+                gameFinished = true;
+            }
         }
     }
 
@@ -131,6 +133,7 @@ public class Main {
         }
         return new Card(toInt(temp[0]), temp[2]);
     }
+
     public static Card playCard(Player[] players, int starterPlayerNumber, Card firstCard) {
         boolean validCard = false;
         String[] temp = null;
