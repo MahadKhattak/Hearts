@@ -71,7 +71,7 @@ public class Main {
                 starterPlayerNumber++;
             }
             int highestCardIndex = Card.findHighestCardIndex(currentStack);
-            players[highestCardIndex].addToTakenCardsAndPoints(currentStack);
+            playerStack[highestCardIndex].addToTakenCardsAndPoints(currentStack);
             //Loop through, check which player put the highest card, add to their arraylist.
             //Player array with the players in their order of play, that matches them to cards automatically.
             //Then loop through Card array, check which has the biggest value, takes its index and give all the cards in the array to the player.

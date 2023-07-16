@@ -15,11 +15,10 @@ public class Methods {
         }
         else if(input.equalsIgnoreCase("s")){
             //Put code to actually save the game here.
-            System.out.println("Game has been saved");
+            System.out.println("Uhh, the saving feature actually seems a bit pointless, and the creator doesn't wanna add it. Sorry!");
         }
         else if(input.equalsIgnoreCase("l")){
-            System.out.println("Please enter the name of the file containing your saved progress, then press enter.");
-            String fileName = keyIn.nextLine();
+            System.out.println("Uhh, the loading feature actually seems a bit pointless, and the creator doesn't wanna add it. Sorry!");
             //More code here to read the Player objects from the file and create them, then load the game at the specified turn.
         }
         else{
